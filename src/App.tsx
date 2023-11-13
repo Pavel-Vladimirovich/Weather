@@ -1,39 +1,61 @@
-import './App.css'
 import { useEffect, useState } from "react";
-import {DailyForecastsType, weatherAPI} from "./api/weather-api.ts";
-import { locationUserAPI } from "./api/location-api.ts";
+import { userLocationAPI } from './api/location-api';
+import { currentWeatherType, DayliForecast } from './api/weather-api';
+import { weatherAPI } from "./api/weather-api.ts";
+import './App.css';
 
 function App() {
-    const [forecastsData, setForecastsData] = useState<DailyForecastsType[]>()
+    const [currentForcastData, setCurrentForcastData] = useState<currentWeatherType>()
+    const [dayliForcastData, setDayliForcastData] = useState<DayliForecast[]>()
+
+    const [location, setLocation] = useState({lat: 0, lon: 0})
+
+    useEffect(()=>{
+        userLocationAPI.getUserLocation()
+            .then((userData) => {
+                if(userData)
+                setLocation({lat: userData.latitude, lon: userData.longitude})
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+    },[])
+
 
     useEffect(() => {
-        locationUserAPI.getUserIP()
-            .then((userData) => {
-                return weatherAPI.getSpecificLocationByIPAddress(userData.ip)
-            })
-            .then((locationData) => {
-                return weatherAPI.getDailyForecasts(locationData.Key)
-            })
-            .then((forecastsData) => {
-                // console.log(forecastsData)
-                setForecastsData(forecastsData)
+            weatherAPI.getCurrentForcast(location.lat, location.lon, 'Minsk')
+            .then((currentForcastData)=>{
+                console.log(currentForcastData)
+                setCurrentForcastData(currentForcastData)
             })
             .catch((error) => {
-                // Обработка ошибок
                 console.error("Произошла ошибка:", error);
             });
 
-    }, []);
-console.log(forecastsData)
+            weatherAPI.getDayliForcast(location.lat, location.lon)
+            .then((dayliForcastData) => {
+                console.log(dayliForcastData)
+                setDayliForcastData(dayliForcastData)
+            })
+            .catch((error) => {
+                console.error("Произошла ошибка:", error);
+            });
+
+    }, [location]);
+    // weatherAPI.getCurrentForcast(location.lat, location.lon, 'Minsk')
     return (
         <>
-            {/*<ul>*/}
-            {/*    {forecastsData?.map(i => {*/}
-            {/*        return (*/}
-            {/*            <li>{i.Temperature.Maximum.Value}</li>*/}
-            {/*        )*/}
-            {/*    })}*/}
-            {/*</ul>*/}
+            {dayliForcastData?.map(item => {
+                return(
+                    <div key={item.dt}>
+                        <div>{item.main.temp}</div>
+                        <div>{item.dt_txt}</div>
+                        
+                    </div>
+                )
+            })}
+            <span>погода сейчас; </span>
+            {currentForcastData?.main.temp}
         </>
 
     )

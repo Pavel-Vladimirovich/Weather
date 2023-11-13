@@ -1,9 +1,14 @@
 import axios from "axios";
 
-export const locationUserAPI = {
-    async getUserIP() {
-        const data = await axios.get<UserLocationType>('https://ipapi.co/json');
-        return (data.data);
+export const userLocationAPI = {
+    async getUserLocation() {
+        try {
+            const data = await axios.get<UserLocationType>('https://ipapi.co/json');
+            return (data.data);
+        } catch (error: any) {
+            console.error('an error occurred while requesting a location: ' + error)
+        }
+        
     }
 }
 

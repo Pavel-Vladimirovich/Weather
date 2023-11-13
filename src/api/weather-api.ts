@@ -1,103 +1,95 @@
 import axios from "axios";
-const API_KEY = 'XSpB9599oXWIP7IG0Q5OQxmkrG6wFRxG'
+const API_KEY = 'bd4d8697c2213442afba131cd703e05a'
 
 const instance = axios.create({
-    baseURL: 'http://dataservice.accuweather.com/',
+    baseURL: 'https://api.openweathermap.org/data/2.5/',
 });
 
 export const weatherAPI = {
-    getSpecificLocationByIPAddress(ipAddress: string){
-       return instance.get<SpecificLocationType>(`locations/v1/cities/ipaddress?apikey=${API_KEY}&q=${ipAddress}`).then((data => data.data))
+    getCurrentForcast(lat: string = '', lon: string = '', city: string = ''){
+       return instance.get<currentWeatherType>(`weather?${city ? `q=${city}` : `lat=${lat}&lon=${lon}`}&appid=${API_KEY}&units=metric`).then((data => data.data))
     },
-    getDailyForecasts(locationKey: string){
-        return instance.get<DailyForecastsType[]>(`forecasts/v1/daily/5day/${locationKey}?apikey=${API_KEY}&metric=true`).then(data => (data.data))
+    getDayliForcast(lat: string, lon: string){
+        return instance.get<DayliForecast[]>(`forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`).then((data => data.data.list))
+    },
+    getForecast(city: string){
+        return instance( `weather?q=${city}&appid=${API_KEY}&units=metric`)
     }
 }
 //types
-type SpecificLocationType = {
-    Key: string,
-    "Type": "City",
-    "Rank": 20,
-    "LocalizedName": "Minsk",
-    "EnglishName": "Minsk",
-    "PrimaryPostalCode": "",
-    Region: {
-        ID: string
-        LocalizedName: string
-        EnglishName: string
-    },
-    "Country": {
-        "ID": "BY",
-        "LocalizedName": "Belarus",
-        "EnglishName": "Belarus"
-    },
-    "AdministrativeArea": {
-        "ID": "HM",
-        "LocalizedName": "Minsk City",
-        "EnglishName": "Minsk City",
-        "Level": 1,
-        "LocalizedType": "Municipality",
-        "EnglishType": "Municipality",
-        "CountryID": "BY"
-    },
-    "TimeZone": {
-        "Code": "MSK",
-        "Name": "Europe/Minsk",
-        "GmtOffset": 3,
-        "IsDaylightSaving": false,
-        "NextOffsetChange": null
-    },
-    "GeoPosition": {
-        "Latitude": 53.9,
-        "Longitude": 27.576,
-        "Elevation": {
-            "Metric": {
-                "Value": 213,
-                "Unit": "m",
-                "UnitType": 5
-            },
-            "Imperial": {
-                "Value": 698,
-                "Unit": "ft",
-                "UnitType": 0
-            }
-        }
-    }
-}
 
-export type DailyForecastsType = {
-    Date: string
-    EpochDate: number
-    Temperature: {
-        Minimum: {
-            Value: number
-            Unit: string
-            UnitType: number
-        }
-        Maximum: {
-            Value: number
-            Unit: string
-            UnitType: number
-        }
+export type currentWeatherType = {
+    base: string
+    clouds: { all: number }
+    cod: number | string
+    coord: { lon: number; lat: number }
+    main: {
+        feels_like: number
+        grnd_level: number
+        humidity: number
+        pressure: number
+        sea_level: number
+        temp: number
+        temp_max: number
+        temp_min: number
     }
-    Day: {
-        Icon: number
-        IconPhrase: string
-        HasPrecipitation: boolean
-        PrecipitationType: string
-        PrecipitationIntensity: string
+    name: string
+    sys: {
+        country: string
+        id: number
+        sunrise: number
+        sunset: number
+        type: number
     }
-    Night: {
-        Icon: number
-        IconPhrase: string
-        HasPrecipitation: boolean
-        PrecipitationType: string
-        PrecipitationIntensity: string
-    }
-    Sources: [
-        string
+    timezone: number
+    visibility: number
+    weather: [
+        {
+            description: string
+            icon: string
+            id: number
+            main: string
+        },
     ]
-    MobileLink: string
-    Link: string
+    wind: {
+        deg: number
+        gust: number
+        speed: number
+    }
 }
-
+export type DayliForecast = {
+        dt: number
+        main: {
+            temp: number
+            feels_like: number
+            temp_min: number
+            temp_max: number
+            pressure: number
+            sea_level: number
+            grnd_level: number
+            humidity: number
+            temp_kf: number
+        }
+        weather: [
+            {
+                id: number
+                main: string
+                description: string
+                icon: string
+            }
+        ],
+        clouds: {
+            all: number
+        }
+        wind: {
+            speed: number
+            deg: number
+            gust: number
+        }
+        visibility: number
+        pop: 0
+        sys: {
+            pod: string
+        }
+        dt_txt: string
+}
