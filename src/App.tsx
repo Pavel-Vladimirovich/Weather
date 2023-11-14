@@ -10,6 +10,9 @@ import rainy from './assets/svg-animated/rainy.svg'
 import thundery from './assets/svg-animated/thundery.svg'
 import snowy from './assets/svg-animated/snowy.svg'
 import foggy from './assets/svg-animated/foggy.svg'
+import { Input } from "./components/input";
+import loaderIcon from './assets/svg-animated/spinner.svg'
+import {AxiosError} from "axios";
 
 const weatherIcons = [
     {key: 'clear sky', iconName: clearSky, weather: 'Sunny'},
@@ -21,15 +24,18 @@ const weatherIcons = [
     {key: 'moderate rain', iconName: rainy, weather: 'Rainy'},
     {key: 'light rain', iconName: rainy, weather: 'Rainy'},
     {key: 'rain', iconName: rainy, weather: 'Rainy'},
+    {key: 'heavy intensity rain', iconName: rainy, weather: 'Rainy'},
     {key: 'thunderstorm', iconName: thundery, weather: 'Thundery'},
     {key: 'snow', iconName: snowy, weather: 'Snowy'},
     {key: 'mist', iconName: foggy, weather: 'Foggy'},
+    {key: 'fog', iconName: foggy, weather: 'Foggy'},
 ]
 
 function App() {
     const [currentForecastData, setCurrentForecastData] = useState<currentWeatherType>()
     const [dailyForecastData, setDailyForecastData] = useState<DayliForecast[]>()
-    const [inputValue, setInputValue] = useState('')
+    const [loader, setLoader] = useState<boolean>(false)
+    const [messageError, setMessageError] = useState<string | null>(null)
 
     const getWeatherIcon = function (weatherKey: string) {
         const obj = weatherIcons.find(el => el.key === weatherKey)
@@ -38,12 +44,11 @@ function App() {
     }
 
     useEffect(() => {
-        currentPosition()
-            .then((position) => {
+        currentPosition().then((position) => {
                 // console.log("Received position:", position);
 
                 return Promise.all([
-                    weatherAPI.getCurrentForecast(position.latitude, position.longitude),
+                    weatherAPI.getForecastByLocation(position.latitude, position.longitude),
                     weatherAPI.getDailyForecast(position.latitude, position.longitude)
                 ]);
             })
@@ -55,11 +60,32 @@ function App() {
                 setDailyForecastData(dailyForecastData);
             })
             .catch((error) => {
-                console.error("Error occurred:", error);
+                console.error("Error occurred: ", error.response.data.message);
+                setMessageError(error.response.data.message)
             });
     }, []);
-    if (currentForecastData && dailyForecastData)
+   
+    const forecastByCityNameHandler = async (city: string) => {
+        setLoader(!loader)
+        setMessageError(null)
+        try {
+            const [currentForecastData, dailyForecastData] = await Promise.all([weatherAPI.getForecastByCityName(city), weatherAPI.getDailyForecastByCityName(city)]) 
+            setCurrentForecastData(currentForecastData)
+            setDailyForecastData(dailyForecastData)
+        } catch (err: AxiosError) {
+            const errors = err as AxiosError  // ????
+            console.warn(errors.response.data.message)
+            setMessageError(errors.response.data.message)
+        }finally{
+            setLoader(loader)
+        } 
 
+    }
+    if (currentForecastData && dailyForecastData){
+        console.log(dailyForecastData)
+    }
+   
+    if (currentForecastData && dailyForecastData)
     return (
         <>
             <div className="wrapper">
@@ -67,35 +93,34 @@ function App() {
                 <div className="shape shape-2"></div>
                 <div className="container">
                     <div className="search-container">
-                        <input
-                            onChange={(e)=>{setInputValue(e.currentTarget.value)}}
-                            type="text"
-                            placeholder="Enter a city name"
-                            id="city"
-                            value={inputValue}
-                        />
-                        <button id="search-btn" onClick={()=>{setInputValue('')}}>Search</button>
+                    <Input forecastByCityName={forecastByCityNameHandler}/>
                     </div>
                     <div id="result">
-                        {/*<h3 className="msg">Please enter a city name</h3>*/}
-                        <h2>{currentForecastData.name}</h2>
-                        <h4 className="weather">{currentForecastData.weather[0].main}</h4>
-                        <h4 className="desc">{currentForecastData.weather[0].description}</h4>
-                        <img src={`${getWeatherIcon(currentForecastData.weather[0].description)}`}
-                             alt='icon'/>
-                        <h1>{Math.round(currentForecastData.main.temp)} &#176;</h1>
-                        <div className="temp-container">
-                            <div>
-                                <h4 className="title">min</h4>
-                                <h4 className="temp">{Math.round(currentForecastData.main.temp_min)}&#176;</h4>
-                            </div>
-                            <div>
-                                <h4 className="title">max</h4>
-                                <h4 className="temp">{Math.round(currentForecastData.main.temp_max)}&#176;</h4>
-                            </div>
-                        </div>
+                        {!loader ?
+                         <div>
+                            {messageError ? 
+                            <h3 className="msg">{messageError}</h3> : 
+                            <>
+                                <h2>{currentForecastData.name}</h2>
+                                <h4 className="weather">{currentForecastData.weather[0].main}</h4>
+                                <h4 className="desc">{currentForecastData.weather[0].description}</h4>
+                                <img src={`${getWeatherIcon(currentForecastData.weather[0].description)}`}
+                                    alt='icon'/>
+                                <h1>{Math.round(currentForecastData.main.temp)} &#176;</h1>
+                                <div className="temp-container">
+                                    <div>                                     
+                                        <h4 className="title">min</h4>
+                                        <h4 className="temp">{Math.round(currentForecastData.main.temp_min)}&#176;</h4>
+                                    </div>
+                                    <div>
+                                        <h4 className="title">max</h4>
+                                        <h4 className="temp">{Math.round(currentForecastData.main.temp_max)}&#176;</h4>
+                                    </div>
+                                </div>
+                            </>}
+                         </div>
+                         : <img src={loaderIcon} alt='icon' />}                        
                     </div>
-
                 </div>
             </div>
         </>

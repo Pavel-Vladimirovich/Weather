@@ -39,7 +39,7 @@
 .search-container {
   font-size: 1em;
   display: grid;
-  grid-template-columns: 9fr 3fr;
+  grid-template-columns: 12fr 0fr;
   gap: 1.25em;
 }
 .search-container input,
