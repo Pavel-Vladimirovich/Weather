@@ -7,10 +7,10 @@ const instance = axios.create({
 
 export const weatherAPI = {
     getForecastByLocation(lat?: number, lon?: number, city?: string){
-       return instance.get<currentWeatherType>(`weather?${(!city ? `lat=${lat}&lon=${lon}` : `q=${city}`)}&appid=${API_KEY}&units=metric`).then((data => data.data))
+       return instance.get<CurrentForecast>(`weather?${(!city ? `lat=${lat}&lon=${lon}` : `q=${city}`)}&appid=${API_KEY}&units=metric`).then((data => data.data))
     },
     getForecastByCityName(city: string){
-        return instance<currentWeatherType>( `weather?q=${city}&appid=${API_KEY}&units=metric`).then((data => data.data))
+        return instance<CurrentForecast>( `weather?q=${city}&appid=${API_KEY}&units=metric`).then((data => data.data))
     },
     getDailyForecastByCityName(city: string){
         return instance.get<DayliForecast[]>(`forecast?q=${city}&appid=${API_KEY}&units=metric`).then((data => data.data.list))
@@ -22,7 +22,7 @@ export const weatherAPI = {
 }
 //types
 
-export type currentWeatherType = {
+export type CurrentForecast = {
     base: string
     clouds: { all: number }
     cod: number | string

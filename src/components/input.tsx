@@ -20,7 +20,7 @@ export const Input = ({forecastByCityName}: PropsType) => {
 				const id = setTimeout(() => {
 					if(values.cityName)
 					forecastByCityName(values.cityName)
-				}, 2500);
+				}, 2000);
 				setTimerId(+id)
 		}}
 	>
