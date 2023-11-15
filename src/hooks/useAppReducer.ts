@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { CurrentForecast, DayliForecast } from "../api/weather-api";
+import { CurrentForecast, DailyForecast } from "../api/weather-api";
 
 const initialState = {
     currentForecastData: {
@@ -51,9 +51,10 @@ const initialState = {
           "name": "",
           "cod": 0
     } as CurrentForecast,
-    dailyForecastData: [] as DayliForecast[],
+    dailyForecastData: [] as DailyForecast[],
     loader: true as boolean,
-    messageError: null as string | null
+    messageError: null as string | null,
+    currentWeather: {} as DailyForecast
 }
 
 
@@ -68,7 +69,7 @@ const reducer = (state: State, action: Actions): State => {
         case "DAILY-FORECAST":
             return {
                 ...state,
-                dailyForecastData: [...action.payload]
+                dailyForecastData: [...state.dailyForecastData, {...action.payload}]
             }
         case "LOADER":
             return {
@@ -79,6 +80,11 @@ const reducer = (state: State, action: Actions): State => {
             return {
                 ...state,
                 messageError: action.payload
+            }
+        case "CURRENT-WEATHER":
+            return {
+                ...state,
+                currentWeather: action.payload
             }
         default:
             return state
@@ -91,15 +97,18 @@ export const useAppReducer = () => {
 }
 
 //Actions
-export const currentForecast = (currentForecastData: CurrentForecast) => ({type: 'CURRENT-FORECAST', payload: currentForecastData})
-export const dailyForecast = (dailyForecastData: DayliForecast[]) => ({type: 'DAILY-FORECAST', payload: dailyForecastData})
-export const setError = (error: string) => ({type: 'ERROR', payload: error})
-export const loader = (value: boolean) => ({type: 'LOADER', payload: value})
+export const currentForecast = (currentForecastData: CurrentForecast) => ({type: 'CURRENT-FORECAST', payload: currentForecastData} as const)
+export const dailyForecast = (dailyForecastData: DailyForecast) => ({type: 'DAILY-FORECAST', payload: dailyForecastData} as const)
+export const setError = (error: string | null) => ({type: 'ERROR', payload: error} as const)
+export const loader = (value: boolean) => ({type: 'LOADER', payload: value} as const)
+export const currentWeather = (forecastData: DailyForecast) => ({type: 'CURRENT-WEATHER', payload: forecastData} as const)
 
 //Types
 type State = typeof initialState
-type Actions =
-    | { type: 'CURRENT-FORECAST'; payload: CurrentForecast }
-    | { type: 'DAILY-FORECAST'; payload: DayliForecast[] }
-    | { type: 'ERROR'; payload: string | null }
-    | { type: 'LOADER'; payload: boolean }
+
+export type Actions =
+    | ReturnType<typeof currentForecast>
+    | ReturnType<typeof dailyForecast>
+    | ReturnType<typeof setError>
+    | ReturnType<typeof loader>
+    | ReturnType<typeof currentWeather>

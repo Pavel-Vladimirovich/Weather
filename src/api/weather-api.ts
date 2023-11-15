@@ -6,17 +6,24 @@ const instance = axios.create({
 });
 
 export const weatherAPI = {
-    getForecastByLocation(lat?: number, lon?: number, city?: string){
-       return instance.get<CurrentForecast>(`weather?${(!city ? `lat=${lat}&lon=${lon}` : `q=${city}`)}&appid=${API_KEY}&units=metric`).then((data => data.data))
+    getForecastByLocation(latitude?: number, longitude?: number, city?: string){
+       return instance.get<CurrentForecast>(`weather?${(!city ? `lat=${latitude}&lon=${longitude}` : `q=${city}`)}&appid=${API_KEY}&units=metric`).then((data => data.data))
+
+    },
+    getWeatherByLocation(latitude: number, longitude: number){
+        return axios.get<any>(`https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${API_KEY}`).then((data => {
+            console.log(data.data)
+            return data
+        }))
     },
     getForecastByCityName(city: string){
         return instance<CurrentForecast>( `weather?q=${city}&appid=${API_KEY}&units=metric`).then((data => data.data))
     },
     getDailyForecastByCityName(city: string){
-        return instance.get<DayliForecast[]>(`forecast?q=${city}&appid=${API_KEY}&units=metric`).then((data => data.data.list))
+        return instance.get<DailyForecast[]>(`forecast?q=${city}&appid=${API_KEY}&units=metric`).then((data => data.data.list))
     },
     getDailyForecast(lat: number | undefined, lon: number | undefined){
-        return instance.get<DayliForecast[]>(`forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`).then((data => data.data.list))
+        return instance.get<DailyForecast[]>(`forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`).then((data => data.data.list))
     },
    
 }
@@ -61,7 +68,7 @@ export type CurrentForecast = {
         speed: number
     }
 }
-export type DayliForecast = {
+export type DailyForecast = {
         dt: number
         main: {
             temp: number
