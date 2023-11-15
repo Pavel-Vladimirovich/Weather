@@ -1,17 +1,18 @@
-import {useEffect, useReducer, useState} from "react";
-import {CurrentForecast, DayliForecast} from './api/weather-api';
-import {weatherAPI} from "./api/weather-api.ts";
+import { useEffect } from "react";
+import { DayliForecast } from "./api/weather-api";
+import { weatherAPI } from "./api/weather-api.ts";
 import './App.css';
+import clearSky from './assets/svg-animated/clear-sky.svg';
+import cloudy from './assets/svg-animated/cloudy.svg';
+import foggy from './assets/svg-animated/foggy.svg';
+import partlyCloudy from './assets/svg-animated/partly-cloudy.svg';
+import rainy from './assets/svg-animated/rainy.svg';
+import snowy from './assets/svg-animated/snowy.svg';
+import loaderIcon from './assets/svg-animated/spinner.svg';
+import thundery from './assets/svg-animated/thundery.svg';
+import { Input } from "./components/input";
+import { currentForecast, dailyForecast, loader, setError, useAppReducer } from "./hooks/useAppReducer";
 import currentPosition from "./utils/currentPosition.ts";
-import clearSky from './assets/svg-animated/clear-sky.svg'
-import partlyCloudy from './assets/svg-animated/partly-cloudy.svg'
-import cloudy from './assets/svg-animated/cloudy.svg'
-import rainy from './assets/svg-animated/rainy.svg'
-import thundery from './assets/svg-animated/thundery.svg'
-import snowy from './assets/svg-animated/snowy.svg'
-import foggy from './assets/svg-animated/foggy.svg'
-import {Input} from "./components/input";
-import loaderIcon from './assets/svg-animated/spinner.svg'
 
 const weatherIcons = [
     {key: 'clear sky', iconName: clearSky, weather: 'Sunny'},
@@ -26,84 +27,14 @@ const weatherIcons = [
     {key: 'heavy intensity rain', iconName: rainy, weather: 'Rainy'},
     {key: 'thunderstorm', iconName: thundery, weather: 'Thundery'},
     {key: 'snow', iconName: snowy, weather: 'Snowy'},
+    {key: 'light snow', iconName: snowy, weather: 'Snowy'},
     {key: 'mist', iconName: foggy, weather: 'Foggy'},
     {key: 'fog', iconName: foggy, weather: 'Foggy'},
 ]
 
-const initialState = {
-    currentForecastData: {} as CurrentForecast,
-    dailyForecastData: [] as DayliForecast[],
-    loader: false as boolean,
-    messageError: null as string | null
-}
-type State = typeof initialState
-type Actions =
-    | { type: 'CURRENT-FORECAST'; payload: CurrentForecast }
-    | { type: 'DAILY-FORECAST'; payload: DayliForecast[] }
-    | { type: 'ERROR'; payload: string | null }
-    | { type: 'LOADER'; payload: boolean }
-
-const reducer = (state: State, action: Actions): State => {
-    switch (action.type) {
-        case "CURRENT-FORECAST":{
-            const {
-                base,
-                clouds,
-                cod,
-                coord,
-                main,
-                name, sys,
-                timezone,
-                visibility,
-                weather,
-                wind } = action.payload;
-
-            return {
-                ...state,
-                currentForecastData: {
-                    base,
-                    clouds,
-                    cod,
-                    coord,
-                    main,
-                    name,
-                    sys,
-                    timezone,
-                    visibility,
-                    weather,
-                    wind,
-                }
-            }
-        }
-        case "DAILY-FORECAST":
-            return {
-                ...state,
-                dailyForecastData: action.payload
-            }
-        case "LOADER":
-            return {
-                ...state,
-                loader: action.payload
-            }
-        case "ERROR":
-            return {
-                ...state,
-                messageError: action.payload
-            }
-        default:
-            return state
-    }
-
-}
-
-
 function App() {
-    const [state, dispatch] = useReducer(reducer, initialState)
-    // const [currentForecastData, setCurrentForecastData] = useState<CurrentForecast>()
-    // const [dailyForecastData, setDailyForecastData] = useState<DayliForecast[]>()
-    // const [loader, setLoader] = useState<boolean>(false)
-    // const [messageError, setMessageError] = useState<string | null>(null)
-
+    const {state, dispatch} = useAppReducer()
+    
     const getWeatherIcon = function (weatherKey: string) {
         const obj = weatherIcons.find(el => el.key === weatherKey)
         if (obj) return obj.iconName
@@ -112,40 +43,68 @@ function App() {
 
     useEffect(() => {
         const fetchData = async () => {
+            dispatch(loader(true))
             try {
                 const position = await currentPosition()
                 const [currentForecastData, dailyForecastData] = await Promise.all(
                     [weatherAPI.getForecastByLocation(position.latitude, position.longitude),
                         weatherAPI.getDailyForecast(position.latitude, position.longitude)])
-                dispatch({type:"CURRENT-FORECAST", payload: currentForecastData});
-                dispatch({type: "DAILY-FORECAST", payload: dailyForecastData})
+                    
+                dispatch(currentForecast(currentForecastData));
+                dispatch(dailyForecast(dailyForecastData))
 
             } catch (error: any) {
                 console.warn(error?.response?.data.message)
-                dispatch({type: "ERROR", payload: error?.response?.data.message})
+                dispatch(setError(error?.response?.data.message))
+            } finally {
+                dispatch(loader(false))
             }
         }
         fetchData()
-
     }, [])
 
     const forecastByCityNameHandler = async (city: string) => {
-        dispatch({type: "LOADER", payload: true})
-        dispatch({type: "ERROR", payload: null})
+        dispatch(loader(true))
+        dispatch(setError(null))
         try {
             const [currentForecastData, dailyForecastData] = await Promise.all([weatherAPI.getForecastByCityName(city), weatherAPI.getDailyForecastByCityName(city)])
-            dispatch({type:"CURRENT-FORECAST", payload: currentForecastData});
-            dispatch({type: "DAILY-FORECAST", payload: dailyForecastData})
+            dispatch(currentForecast(currentForecastData))
+
+            const uniqueForecastDays: number[] = [];
+            const fiveDaysForecast = dailyForecastData.filter(forecast => {
+                const forecastDate = new Date(forecast.dt_txt).getDate();
+                if (!uniqueForecastDays.includes(forecastDate)) {
+                    return uniqueForecastDays.push(forecastDate);
+                }
+            })
+            dispatch(dailyForecast(fiveDaysForecast))
         } catch (error: any) {
             console.warn(error?.response?.data.message)
-            dispatch({type: "ERROR", payload: error?.response?.data.message})
+            dispatch(setError(error?.response?.data.message))
         } finally {
-            dispatch({type: "LOADER", payload: false})
+            dispatch(loader(false))
         }
 
     }
-    if (state.currentForecastData && state.dailyForecastData) {
-        console.log(state.currentForecastData)
+    if (state.dailyForecastData) {
+        // Filter the forecasts to get only one forecast per day
+        const uniqueForecastDays: number[] = [];
+        const fiveDaysForecast = state.dailyForecastData.filter(forecast => {
+            const forecastDate = new Date(forecast.dt_txt).getDate();
+            if (!uniqueForecastDays.includes(forecastDate)) {
+                return uniqueForecastDays.push(forecastDate);
+            }
+        })
+        fiveDaysForecast.forEach((weatherItem, index) => {
+            if(index === 0){
+                // console.log(weatherItem)
+            }else{
+                // console.log(weatherItem)
+            }
+        })
+
+        // console.log(uniqueForecastDays)
+        console.log(state.dailyForecastData)
     }
 
     if (state.currentForecastData && state.dailyForecastData)
