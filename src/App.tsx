@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { DailyForecast } from "./api/weather-api";
+import { Forecast } from "./api/weather-api";
 import { weatherAPI } from "./api/weather-api.ts";
 import './App.css';
 import clearSky from './assets/svg-animated/clear-sky.svg';
@@ -82,13 +82,13 @@ function App() {
         }
 
     }
-    const getWeatherDetails = async (city: string) => {
+    const getWeatherDetails = async (lat: number, lon: number, cityName: string) => {
         try {
-            const dailyForecastData: DailyForecast[] = await weatherAPI.getDailyForecastByCityName(city)
+            const forecastData: Forecast[] = await weatherAPI.getWeatherDetails(lat, lon)
 
             // Filter the forecasts to get only one forecast per day
             const uniqueForecastDays: number[] = [];
-            const fiveDaysForecast = dailyForecastData.filter(forecast => {
+            const fiveDaysForecast = forecastData.filter(forecast => {
                 const forecastDate = new Date(forecast.dt_txt).getDate();
                 if (!uniqueForecastDays.includes(forecastDate)) {
                     return uniqueForecastDays.push(forecastDate);
@@ -96,11 +96,11 @@ function App() {
             })
             fiveDaysForecast.forEach((weatherItem, index) => {
                 if(index === 0){
-                    // console.log(weatherItem)
-                    dispatch(currentWeather(weatherItem))
+                    console.log(weatherItem, 'general')
+                    // dispatch(currentWeather(weatherItem))
                 }else{
-                    // console.log(weatherItem)
-                    dispatch(dailyForecast(weatherItem))
+                    console.log(weatherItem)
+                    // dispatch(dailyForecast(weatherItem))
                 }
             })
         }catch (error: any){
@@ -109,23 +109,21 @@ function App() {
         }
     }
     if (state.currentWeather && state.dailyForecastData){
-        console.log(state.currentWeather)
-        console.log(state.dailyForecastData)
+        // console.log(state.currentWeather)
+        // console.log(state.dailyForecastData)
     }
 
-    const fetchData = async () => {
-        dispatch(loader(true))
+    const getUserCoordinates = async () => {
         try {
             const position = await currentPosition()
-            const currentForecastData = await weatherAPI.getWeatherByLocation(position.latitude, position.longitude)// запрос на другой адрес
-            dispatch(currentForecast(currentForecastData));
-            // dispatch(dailyForecast(dailyForecastData))
+            const currentUserCoordinates = await weatherAPI.getUserCoordinates(position.latitude, position.longitude)
+            const {lat, lon, name} = currentUserCoordinates[0]
+
+            getWeatherDetails(lat, lon, name)
 
         } catch (error: any) {
             console.warn(error?.response?.data.message)
             dispatch(setError(error?.response?.data.message))
-        } finally {
-            dispatch(loader(false))
         }
     }
 
@@ -167,7 +165,7 @@ function App() {
                         </div>
                     </div>
                 </div>
-                <button onClick={fetchData}>your geo</button>
+                <button onClick={getUserCoordinates}>your geo</button>
             </>
 
         )

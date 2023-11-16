@@ -8,22 +8,18 @@ const instance = axios.create({
 export const weatherAPI = {
     getForecastByLocation(latitude?: number, longitude?: number, city?: string){
        return instance.get<CurrentForecast>(`weather?${(!city ? `lat=${latitude}&lon=${longitude}` : `q=${city}`)}&appid=${API_KEY}&units=metric`).then((data => data.data))
-
-    },
-    getWeatherByLocation(latitude: number, longitude: number){
-        return axios.get<any>(`https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${API_KEY}`).then((data => {
-            console.log(data.data)
-            return data
-        }))
     },
     getForecastByCityName(city: string){
         return instance<CurrentForecast>( `weather?q=${city}&appid=${API_KEY}&units=metric`).then((data => data.data))
     },
     getDailyForecastByCityName(city: string){
-        return instance.get<DailyForecast[]>(`forecast?q=${city}&appid=${API_KEY}&units=metric`).then((data => data.data.list))
+        return instance.get<Forecast[]>(`forecast?q=${city}&appid=${API_KEY}&units=metric`).then((data => data.data.list))
     },
-    getDailyForecast(lat: number | undefined, lon: number | undefined){
-        return instance.get<DailyForecast[]>(`forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`).then((data => data.data.list))
+    getUserCoordinates(latitude: number, longitude: number){
+        return axios.get<UserCoordinates[]>(`https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${API_KEY}`).then((data => data.data))
+    },
+    getWeatherDetails(lat: number | undefined, lon: number | undefined){
+        return instance.get<Forecast[]>(`forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`).then((data => data.data.list))
     },
    
 }
@@ -68,7 +64,7 @@ export type CurrentForecast = {
         speed: number
     }
 }
-export type DailyForecast = {
+export type Forecast = {
         dt: number
         main: {
             temp: number
@@ -103,4 +99,11 @@ export type DailyForecast = {
             pod: string
         }
         dt_txt: string
+}
+
+type UserCoordinates = {
+    country: string
+    lat: number
+    lon: number
+    name: string
 }
