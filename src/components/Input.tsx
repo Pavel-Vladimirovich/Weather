@@ -1,26 +1,29 @@
 import { ChangeEvent, useState } from 'react';
-import { Field, Form, Formik } from 'formik';
-import * as Yup from 'yup';
+import {Field, Form, Formik, FormikHelpers} from 'formik';
 
 type PropsType = {
-	forecastByCityName: (city: string) => void
+	forecastByCityName: (city: string, submitProps: FormikHelpers<FormValues>) => void
 }
-const SignupSchema = Yup.object().shape({
-	cityName: Yup.string().required('Required'),
-  });
+
+export type FormValues = {
+	cityName: string
+}
 
 export const Input = ({forecastByCityName}: PropsType) => {
 	const [timerId, setTimerId] = useState<number | undefined>(undefined)
+	const initialValue: FormValues = {
+		cityName: ''
+	}
 	return(
 	<Formik
-		initialValues={{ cityName: ''}}
-		validationSchema={SignupSchema}
-		onSubmit={(values) => {
+		initialValues = {initialValue}
+		onSubmit={(values,submitProps) => {
 				clearTimeout(timerId)
 				const id = setTimeout(() => {
 					if(values.cityName)
-					forecastByCityName(values.cityName)
-				}, 2000);
+					forecastByCityName(values.cityName, submitProps)
+				}, 1000);
+
 				setTimerId(+id)
 		}}
 	>

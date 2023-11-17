@@ -127,3 +127,12 @@
     font-size: 14px;
   }
 }
+.weather-card{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0;
+  /*background-color: #f0f0f0;*/
+  position: relative;
+  z-index: 999;
+}

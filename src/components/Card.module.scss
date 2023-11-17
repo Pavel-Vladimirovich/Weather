@@ -1,0 +1,32 @@
+.weatherCard {
+    border-left: 1px solid var(--transp-white-1);
+    color: var(--white);
+    padding: 0 10px;
+    text-align: center;
+}
+.day{
+    margin-bottom: 8px;
+}
+
+.weatherIcon {
+    width: 35px;
+    height: 35px;
+}
+
+.wind img,
+.wind span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.wind{
+    text-align: center;
+    margin-bottom: 10px;
+    span{
+        color: var(--white);
+    }
+}
+
+.temperature {
+
+}
