@@ -18,9 +18,9 @@ export const getCityCoordinates = async (city: string, submitProps: FormikHelper
             dispatch(setError('city not found...'))
         }
 
-    } catch (error: any) {
-        console.warn(error?.response?.data.message)
-        dispatch(setError(error?.response?.data.message))
+    } catch (error) {
+        console.error('some error occurred: ' + error)
+        dispatch(setError('some error occurred'))
     } finally {
         dispatch(loader(false))
     }

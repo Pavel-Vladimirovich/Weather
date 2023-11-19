@@ -1,6 +1,5 @@
 import {useEffect} from "react";
-import './App.css';
-import loaderIcon from './assets/svg-animated/spinner.svg';
+import style from './App.module.scss';
 import {FormValues, Input} from "./components/Input.tsx";
 import {useAppReducer} from "./hooks/useAppReducer";
 import {Card} from "./components/Card.tsx";
@@ -24,59 +23,69 @@ function App() {
         getCityCoordinates(city, submitProps, dispatch)
     }
 
+    const city = state.currentForecast.city
+    const temp = Math.round(state.currentForecast.main.temp)
+    const feelsLike = state.currentForecast.main.feels_like
+    const weather = state.currentForecast.weather[0].main
+    const description = state.currentForecast.weather[0].description
+    const weatherIcon = getWeatherIcon(state.currentForecast.weather[0].description) || ''
+    const tempMin = Math.round(state.currentForecast.main.temp_min)
+    const tempMax = Math.round(state.currentForecast.main.temp_max)
     return (
-        <>
-            <div className="wrapper">
-                <div className="shape shape-1"></div>
-                <div className="shape shape-2"></div>
-                <div className="container">
-                    <div className="search-container">
-                        <Input forecastByCityName={getCityCoordinatesHandler}/>
+        <div className={style.wrapper}>
+            <div className={`${style.shape} ${style.shape1}`}></div>
+            <div className={`${style.shape} ${style.shape2}`}></div>
+            <div className={`${style.shape} ${style.shape3}`}></div>
+            <div className={style.container}>
+                <div>
+                    <div className={style.searchContainer}>
+                        <Input forecastByCityName={getCityCoordinatesHandler}
+                               getUserCoordinates={getUserCoordinatesHandler}/>
                     </div>
-                    <div id="result">
-                        {!state.loader ?
-                            <>
-                                {state.messageError ?
-                                    <h3 className="msg">{state.messageError}</h3> :
-                                    <>
-                                        <h2>{state.currentForecast.city}</h2>
-                                        <h4 className="weather">{state.currentForecast.weather[0].main}</h4>
-                                        <h4 className="desc">{state.currentForecast.weather[0].description}</h4>
-                                        <img src={getWeatherIcon(state.currentForecast.weather[0].description) || ''}
-                                             alt='icon'/>
-                                        <h1>{Math.round(state.currentForecast.main.temp)} &#176;</h1>
-                                        <div className="temp-container">
-                                            <div>
-                                                <h4 className="title">min</h4>
-                                                <h4 className="temp">{Math.round(state.currentForecast.main.temp_min)}&#176;</h4>
-                                            </div>
-                                            <div>
-                                                <h4 className="title">max</h4>
-                                                <h4 className="temp">{Math.round(state.currentForecast.main.temp_max)}&#176;</h4>
-                                            </div>
-                                        </div>
-                                    </>}
-                            </>
-                            : <img src={loaderIcon} alt='icon'/>}
+                    <div className={style.result}>
+                        <img src={weatherIcon}
+                             alt='icon'/>
+                        <h2>{city}</h2>
                     </div>
                 </div>
-                <div className='weather-card'>
-                    {state.dailyForecast.map((weatherItem, index) => {
-                        if (weatherItem) {
-                            const dayOfWeek = getDayOfWeek(weatherItem.dt_txt)
-                            const weatherIcon = getWeatherIcon(weatherItem.weather[0].description)
-                            return <Card
-                                key={index}
-                                forecast={weatherItem}
-                                weatherIcon={weatherIcon}
-                                dayOfWeek={dayOfWeek}/>
-                        }
-                    })}
-                </div>
+                    <h4>{description}</h4>
+                <div className={style.tempContainer} >
+                    <div className={style.currentTemp}>
+                        <div>
 
+                            <h1>{temp} &#176;</h1>
+                        </div>
+                        <div className={style.currentTempMain}>
+                            <img src={weatherIcon}
+                                 alt='icon'/>
+                            <div className={style.currentTempDescription}>
+                                <div>
+                                    <h4 className={style.title}>min</h4>
+                                    <h4 className={style.temp}>{tempMin}&#176;</h4>
+                                </div>
+                                <div>
+                                    <h4 className={style.title}>max</h4>
+                                    <h4 className={style.temp}>{tempMax}&#176;</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={style.dailyTemp} >
+                        {state.dailyForecast.map((weatherItem, index) => {
+                            if (weatherItem) {
+                                const dayOfWeek = getDayOfWeek(weatherItem.dt_txt)
+                                const weatherIcon = getWeatherIcon(weatherItem.weather[0].description)
+                                return <Card
+                                    key={index}
+                                    forecast={weatherItem}
+                                    weatherIcon={weatherIcon}
+                                    dayOfWeek={dayOfWeek}/>
+                            }
+                        })}
+                    </div>
+                </div>
             </div>
-            <button onClick={getUserCoordinatesHandler}>Use Your Location</button>
-        </>
+        </div>
 
     )
 }

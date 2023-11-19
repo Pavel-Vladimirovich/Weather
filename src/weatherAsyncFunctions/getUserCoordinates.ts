@@ -11,9 +11,7 @@ export const getUserCoordinates = async (dispatch: React.Dispatch<Actions>) => {
         const position = await getCurrentPosition()
         const currentUserCoordinates = await weatherAPI.getUserCoordinates(position.latitude, position.longitude)
         const {lat, lon, name} = currentUserCoordinates[0]
-
         getWeatherDetails(lat, lon, name, dispatch)
-
     } catch (error: any) {
         console.warn(error?.response?.data.message)
         dispatch(setError(error?.response?.data.message))

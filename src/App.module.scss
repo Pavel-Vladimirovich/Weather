@@ -1,0 +1,144 @@
+.wrapper {
+  font-size: 16px;
+  width: 100%;
+  max-width: 1240px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+.container {
+  width: 100%;
+  background: var(--transp-white-2);
+  backdrop-filter: blur(10px);
+  padding: 3em 1.8em;
+  border: 2px solid var(--transp-white-2);
+  border-radius: 0.6em;
+  box-shadow: 0 1.8em 3.7em var(--shadow);
+}
+
+.shape {
+  position: absolute;
+  background-color: var(--transp-white-1);
+  backdrop-filter: blur(1.2em);
+  border: 2px solid var(--transp-white-2);
+  border-radius: 50%;
+}
+
+.shape1 {
+  height: 13em;
+  width: 13em;
+  right: -6.5em;
+  top: 1.8em;
+}
+
+.shape2 {
+  height: 11em;
+  width: 11em;
+  bottom: -3.7em;
+  left: -2.5em;
+}
+
+.shape3 {
+  height: 15em;
+  width: 15em;
+  bottom: 21.7em;
+  left: -20.5em;
+}
+.container h4{
+  color: var(--white);
+}
+
+.searchContainer {
+  font-size: 1em;
+  display: grid;
+  grid-template-columns: 10fr 2fr;
+  gap: 1.25em;
+}
+
+.searchContainer input {
+  padding: 0.7em;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid var(--transp-white-1);
+  color: var(--white);
+  outline: none;
+  font-size: 1em;
+  font-weight: 300;
+}
+
+.searchContainer input::placeholder {
+  color: var(--off-white);
+}
+
+.searchContainer input:focus {
+  border-color: var(--white);
+}
+
+.result h2 {
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  margin: 1.25em 0;
+}
+
+
+.result img {
+  //margin: 0.6em 0 0 0;
+  width: 10.5em;
+  //filter: drop-shadow(0 1.8em 3.7em var(--shadow));
+}
+
+.tempContainer {
+  display: flex;
+  //justify-content: center;
+  color: var(--white);
+}
+
+.tempContainer h1 {
+  font-size: 4em;
+  margin: 0.3em 0 0.7em 0;
+  line-height: 0;
+  font-weight: 400;
+}
+
+.currentTemp {
+  flex: 0 1 30%;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.currentTempMain {
+  //border: #4475ef 1px solid;
+  img{
+    width: 5.5em;
+  }
+}
+
+.currentTempDescription {
+  //border: #4475ef 1px solid;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  h4 {
+    color: var(--white);
+    font-weight: 400;
+  }
+}
+.dailyTemp {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0;
+}
+
+@media screen and (max-width: 450px) {
+  .wrapper {
+    font-size: 14px;
+  }
+}
