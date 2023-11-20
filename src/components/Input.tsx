@@ -31,7 +31,7 @@ export const Input = ({forecastByCityName, getUserCoordinates}: PropsType) => {
                     if (values.cityName) {
                         forecastByCityName(values.cityName, submitProps)
                     }
-                }, 1000);
+                }, 1500);
                 setTimerId(+id)
 
             }}

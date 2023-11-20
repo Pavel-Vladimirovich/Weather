@@ -7,7 +7,7 @@ import windIcon from "./assets/svg/weather-wind.svg"
 import {FormikHelpers} from "formik";
 import {getDayOfWeek, getWeatherIcon} from "./utils";
 import {getCityCoordinates, getUserCoordinates} from "./weatherAsyncFunctions";
-import { LinearLoader } from "./components/linearLoader";
+import {LinearLoader} from "./components/LinearLoader.tsx";
 
 
 function App() {
@@ -52,20 +52,22 @@ function App() {
                 <div className={style.result}>
                     <img src={weatherIcon}
                             alt='icon'/>
-                    <h2>{city}</h2>
+                    <h2>{weather}</h2>
+                    <h1>{city}</h1>
                 </div>
                 <div className={style.tempContainer} >
-                    <div className={style.currentTemp}>
+                    <div className={style.current}>
                         <div>
-                            <h1>{temp}°</h1>
+                            <h2>{temp}°</h2>
                             <h4>feels like {feelsLike}°</h4>
-                            <div className={style.wind}><img src={windIcon} alt="wind-icon"/> <span>{wind} m/s</span></div>
+                            <div className={style.currentWind}><img src={windIcon} alt="wind-icon"/> <span>{wind} m/s</span></div>
                         </div>
-                        <div className={style.currentTempMain}>
-                            <img src={weatherIcon}
+                        <div>
+                            <img className={style.currentIcon}
+                                 src={weatherIcon}
                                  alt='icon'/>
-                                 <h4>{description}</h4>
-                            <div className={style.currentTempDescription}>
+                            <h4 className={style.currentDescription}>{description}</h4>
+                            <div className={style.currentMinMaxTemp}>
                                 <div>
                                     <h4 className={style.title}>min</h4>
                                     <h4 className={style.temp}>{tempMin}°</h4>
@@ -77,7 +79,7 @@ function App() {
                             </div>
                         </div>
                     </div>
-                    <div className={style.dailyTemp} >
+                    <div className={style.daily} >
                         {state.dailyForecast.map((weatherItem, index) => {
                             if (weatherItem) {
                                 const dayOfWeek = getDayOfWeek(weatherItem.dt_txt)
