@@ -1,10 +1,11 @@
 import {useFormikContext} from "formik";
-import style from "./coordinatesButton.module.scss"
+import style from "./locationButton.module.scss"
 type Props = {
     getUserCoordinates: () => void
+    className: string
 }
 
-const CoordinatesButton = ({getUserCoordinates}: Props) => {
+const CoordinatesButton = ({getUserCoordinates, className}: Props) => {
 
     const { resetForm } = useFormikContext();
 
@@ -15,7 +16,7 @@ const CoordinatesButton = ({getUserCoordinates}: Props) => {
     return (
         <>
             <button
-                className={style.button}
+                className={className}
                 type="submit"
                 onClick={onClickHandler}
             >

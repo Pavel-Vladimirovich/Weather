@@ -15,7 +15,7 @@ export const getCityCoordinates = async (city: string, submitProps: FormikHelper
             getWeatherDetails(lat, lon, city, dispatch)
             submitProps.resetForm()
         } else {
-            dispatch(setError('city not found...'))
+            dispatch(setError(`sorry, city not found... ¯/_(ツ)_/¯ `))
         }
 
     } catch (error) {

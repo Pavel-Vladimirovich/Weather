@@ -41,7 +41,7 @@ const initialState = {
     } as CurrentForecast,
     dailyForecast: [] as (Forecast | null) [],
     loader: true as boolean,
-    messageError: null as string | null,
+    messageError: 'null' as string | null,
 }
 
 

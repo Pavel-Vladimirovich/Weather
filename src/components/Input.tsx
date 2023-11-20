@@ -1,6 +1,7 @@
 import {ChangeEvent, useState} from 'react';
 import {Field, Form, Formik, FormikHelpers} from 'formik';
-import CoordinatesButton from "./CoordinatesButton.tsx";
+import style from "./input.module.scss"
+import LocationButton from './LocationButton';
 
 type PropsType = {
     forecastByCityName: (city: string, submitProps: FormikHelpers<FormValues>) => void
@@ -37,12 +38,16 @@ export const Input = ({forecastByCityName, getUserCoordinates}: PropsType) => {
         >
             {({values, handleChange, submitForm}) => (
                 <Form>
-                    <Field type="text" name="cityName" placeholder="Weather in your city" value={values.cityName}
-                           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                               handleChange(e)
-                               submitForm()
-                           }}/>
-                    <CoordinatesButton getUserCoordinates={getUserCoordinatesHandler}/>
+                    <div className={style.searchContainer}>
+                        <Field className={style.input} type="text" name="cityName" placeholder="Weather in your city" value={values.cityName}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                handleChange(e)
+                                submitForm()
+                            }}/>
+
+                         
+                        <LocationButton className={style.button} getUserCoordinates={getUserCoordinatesHandler}/>
+                    </div>
                 </Form>
             )}
 
