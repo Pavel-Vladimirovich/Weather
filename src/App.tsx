@@ -1,13 +1,13 @@
 import {useEffect} from "react";
 import style from './App.module.scss';
-import {FormValues, Input} from "./components/Input.tsx";
+import {Input, Card, LinearLoader} from "./components";
 import {useAppReducer} from "./hooks/useAppReducer";
-import {Card} from "./components/Card.tsx";
 import windIcon from "./assets/svg/weather-wind.svg"
 import {FormikHelpers} from "formik";
 import {getDayOfWeek, getWeatherIcon} from "./utils";
 import {getCityCoordinates, getUserCoordinates} from "./weatherAsyncFunctions";
-import {LinearLoader} from "./components/LinearLoader.tsx";
+import { FormValues } from "./components/input/Input";
+import humidityIcon from "./assets/svg/weather-humidity.svg"
 
 
 function App() {
@@ -34,6 +34,7 @@ function App() {
     const tempMin = Math.round(state.currentForecast.main.temp_min)
     const tempMax = Math.round(state.currentForecast.main.temp_max)
     const wind = Math.round(state.currentForecast.wind.speed)
+    const humidity = Math.round(state.currentForecast.main.humidity)
     return (
         <>
             <div className={style.loader}>
@@ -61,6 +62,7 @@ function App() {
                             <h2>{temp}°</h2>
                             <h4>feels like {feelsLike}°</h4>
                             <div className={style.currentWind}><img src={windIcon} alt="wind-icon"/> <span>{wind} m/s</span></div>
+                            <div className={style.currenthumidity}><img src={humidityIcon} alt="wind-icon"/> <span>{humidity} %</span></div>
                         </div>
                         <div>
                             <img className={style.currentIcon}

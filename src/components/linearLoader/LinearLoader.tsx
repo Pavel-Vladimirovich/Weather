@@ -4,7 +4,7 @@ export const LinearLoader = () => {
 
 
 return (
-	<div class={style.linearActivity}>
-		<div class={style.indeterminate}></div>
+	<div className={style.linearActivity}>
+		<div className={style.indeterminate}></div>
 	</div>
 )}

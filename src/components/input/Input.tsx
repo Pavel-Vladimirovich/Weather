@@ -1,7 +1,8 @@
 import {ChangeEvent, useState} from 'react';
 import {Field, Form, Formik, FormikHelpers} from 'formik';
 import style from "./input.module.scss"
-import LocationButton from './LocationButton';
+import {LocationButton} from '../locationButton/LocationButton.tsx';
+import * as React from 'react';
 
 type PropsType = {
     forecastByCityName: (city: string, submitProps: FormikHelpers<FormValues>) => void
@@ -12,8 +13,8 @@ export type FormValues = {
     cityName: string
 }
 
-export const Input = ({forecastByCityName, getUserCoordinates}: PropsType) => {
-
+export const Input = React.memo(({forecastByCityName, getUserCoordinates}: PropsType) => {
+   
     const [timerId, setTimerId] = useState<number | undefined>(undefined)
     const initialValue: FormValues = {
         cityName: ''
@@ -37,20 +38,15 @@ export const Input = ({forecastByCityName, getUserCoordinates}: PropsType) => {
             }}
         >
             {({values, handleChange, submitForm}) => (
-                <Form>
-                    <div className={style.searchContainer}>
-                        <Field className={style.input} type="text" name="cityName" placeholder="Weather in your city" value={values.cityName}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                handleChange(e)
-                                submitForm()
-                            }}/>
-
-                         
-                        <LocationButton className={style.button} getUserCoordinates={getUserCoordinatesHandler}/>
-                    </div>
+                <Form className={style.searchContainer}>
+                    <Field className={style.input} type="text" name="cityName" placeholder="Weather in your city" value={values.cityName}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            handleChange(e)
+                            submitForm()
+                        }}/>
+                    <LocationButton className={style.button} getUserCoordinates={getUserCoordinatesHandler}/>
                 </Form>
             )}
-
         </Formik>
     )
-};
+});

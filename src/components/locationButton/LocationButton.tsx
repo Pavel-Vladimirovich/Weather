@@ -1,14 +1,14 @@
 import {useFormikContext} from "formik";
-import style from "./locationButton.module.scss"
-type Props = {
+import locationIcon from "../../assets/svg/location.svg"
+
+type PropsType = {
     getUserCoordinates: () => void
     className: string
 }
 
-const CoordinatesButton = ({getUserCoordinates, className}: Props) => {
+export const LocationButton = ({getUserCoordinates, className}: PropsType) => {
 
     const { resetForm } = useFormikContext();
-
     const onClickHandler = () => {
         getUserCoordinates()
         resetForm()
@@ -20,10 +20,10 @@ const CoordinatesButton = ({getUserCoordinates, className}: Props) => {
                 type="submit"
                 onClick={onClickHandler}
             >
-               Use Your Location
+                Use Your Location
+                <img src={locationIcon} alt="" />
             </button>
         </>
     );
 };
 
-export default CoordinatesButton;

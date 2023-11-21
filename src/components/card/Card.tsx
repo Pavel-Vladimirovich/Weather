@@ -1,17 +1,17 @@
-import React from "react";
 import style from "./Card.module.scss"
 import {Forecast} from "../api/weather-api.ts";
-import windIcon from "../assets/svg/weather-wind.svg"
-type Props = {
+import windIcon from "../../assets/svg/weather-wind.svg"
+import * as React from "react";
+
+type PropsType = {
     forecast: Forecast | null
     weatherIcon: string | false
     dayOfWeek: string
 }
 
-export const Card = React.memo(({ forecast, weatherIcon, dayOfWeek }: Props) => {
+export const Card = React.memo(({ forecast, weatherIcon, dayOfWeek }: PropsType) => {
     const temp = forecast?.main.temp && Math.ceil(forecast.main.temp);
     const wind = forecast?.wind.speed && Math.ceil(forecast.wind.speed);
-
     return (
         <div className={style.weatherCard}>
             <div className={style.day}>{dayOfWeek}</div>
