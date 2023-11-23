@@ -8,6 +8,8 @@ import {getDayOfWeek, getWeatherIcon} from "./utils";
 import {getCityCoordinates, getUserCoordinates} from "./weatherAsyncFunctions";
 import { FormValues } from "./components/input/Input";
 import humidityIcon from "./assets/svg/weather-humidity.svg"
+import maxIcon from "./assets/svg/max-temp.svg"
+import minIcon from "./assets/svg/min-temp.svg"
 
 
 function App() {
@@ -61,22 +63,31 @@ function App() {
                         <div>
                             <h2>{temp}°</h2>
                             <h4>feels like {feelsLike}°</h4>
-                            <div className={style.currentWind}><img src={windIcon} alt="wind-icon"/> <span>{wind} m/s</span></div>
-                            <div className={style.currenthumidity}><img src={humidityIcon} alt="wind-icon"/> <span>{humidity} %</span></div>
+                            <div className={style.currentDiscription}>
+                                <div>
+                                    <img src={minIcon} alt="icon"/>
+                                    <h4 className={style.temp}>{tempMin}°</h4>
+                                    
+                                </div>
+                                <div>
+                                    <img src={maxIcon} alt="icon"/>
+                                    <h4 className={style.temp}>{tempMax}°</h4>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <img className={style.currentIcon}
-                                 src={weatherIcon}
-                                 alt='icon'/>
-                            <h4 className={style.currentDescription}>{description}</h4>
-                            <div className={style.currentMinMaxTemp}>
+                                src={weatherIcon}
+                                alt='icon'/>
+                            <h4>{description}</h4>
+                            <div className={style.currentDiscription}>
                                 <div>
-                                    <h4 className={style.title}>min</h4>
-                                    <h4 className={style.temp}>{tempMin}°</h4>
+                                    <img src={windIcon} alt="icon"/>
+                                    <h4 className={style.temp}>{wind} m/s</h4>
                                 </div>
                                 <div>
-                                    <h4 className={style.title}>max</h4>
-                                    <h4 className={style.temp}>{tempMax}°</h4>
+                                    <img src={humidityIcon} alt="icon"/>
+                                    <h4 className={style.temp}>{humidity} %</h4>
                                 </div>
                             </div>
                         </div>
@@ -102,3 +113,9 @@ function App() {
 }
 
 export default App
+
+
+// <h2>{temp}°</h2>
+// <h4>feels like {feelsLike}°</h4>
+// <div className={style.currentWind}><img src={windIcon} alt="wind-icon"/> <span>{wind} m/s</span></div>
+// <div className={style.currenthumidity}><img src={humidityIcon} alt="wind-icon"/> <span>{humidity} %</span></div>

@@ -134,7 +134,8 @@
 
 .tempContainer {
   display: flex;
-  @media screen and (max-width: 768px){
+
+  @media screen and (max-width: 768px) {
     display: block;
   }
 }
@@ -144,56 +145,35 @@
   display: flex;
   gap: 2.18em;
   justify-content: center;
-  align-items: center;
-  @media screen and (max-width: 768px){
+  text-align: center;
+
+  @media screen and (max-width: 768px) {
     margin-bottom: 3em;
   }
 }
 
 .current h2 {
+  text-align: center;
   color: var(--white);
   font-size: 4em;
-  margin: 0.3em 0 0.7em 0;
-  line-height: 0;
   font-weight: 400;
 }
 
 .current h4 {
   font-size: 1em;
   font-weight: 400;
-  text-align: center;
-}
-
-.currentWind img,
-.currentWind span {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.currentWind {
-  text-align: center;
-  margin: 0 0 0.62em 0;
-
-  span {
-    color: var(--white);
-  }
-}
-
-.currentDescription {
-  margin: 0 0 .5em 0;
 }
 
 .currentIcon {
-  width: 5.5em;
+  width: 5.8em;
 }
 
-.currentMinMaxTemp {
+.currentDiscription {
   display: flex;
   justify-content: center;
   margin: .15em 0 0 0;
 
   div {
-    text-align: center;
     padding: 0 .43em;
   }
 
@@ -207,6 +187,16 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+
+  &>div {
+    border-left: 1px solid var(--transp-white-1);
+  }
+
+  &>div:first-child {
+    @media screen and (max-width: 768px) {
+      border-left: none;
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {
