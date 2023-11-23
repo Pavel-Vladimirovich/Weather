@@ -1,7 +1,7 @@
 import style from "./Card.module.scss"
-import {Forecast} from "../api/weather-api.ts";
 import windIcon from "../../assets/svg/weather-wind.svg"
 import * as React from "react";
+import {Forecast} from "../../api/weather-api.ts";
 
 type PropsType = {
     forecast: Forecast | null

@@ -1,5 +1,5 @@
 import {FormikHelpers} from "formik";
-import {FormValues} from "../components/Input.tsx";
+import {FormValues} from "../components/input/Input.tsx";
 import {Actions, loader, setError} from "../hooks/useAppReducer.ts";
 import {weatherAPI} from "../api/weather-api.ts";
 import {getWeatherDetails} from "./getWeatherDetails.ts";
