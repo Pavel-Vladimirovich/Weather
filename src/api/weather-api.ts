@@ -13,13 +13,16 @@ export const weatherAPI = {
     getUserCoordinates(latitude: number, longitude: number) {
         return instance.get<Coordinates[]>(`reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${API_KEY}`).then((data => data.data))
     },
-    getWeatherDetails(lat: number | undefined, lon: number | undefined) {
-        // @ts-ignore
-        return axios.get<Forecast[]>(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`).then((data => data.data.list))
+    getWeatherDetails(lat: number, lon: number) {
+        return axios.get<ForecastResponse>(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`).then((data => data.data.list))
     },
 
 }
 //types
+type ForecastResponse = {
+    list: Forecast[];
+}
+
 export type Forecast = {
     dt: number
     main: {

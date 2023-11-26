@@ -4,14 +4,14 @@ import * as React from "react";
 import {Forecast} from "../../api/weather-api.ts";
 
 type PropsType = {
-    forecast: Forecast | null
+    forecast: Forecast
     weatherIcon: string | false
     dayOfWeek: string
 }
 
 export const Card = React.memo(({ forecast, weatherIcon, dayOfWeek }: PropsType) => {
-    const temp = forecast?.main.temp && Math.ceil(forecast.main.temp);
-    const wind = forecast?.wind.speed && Math.ceil(forecast.wind.speed);
+    const temp = Math.ceil(forecast.main.temp);
+    const wind =  Math.ceil(forecast.wind.speed);
     return (
         <div className={style.weatherCard}>
             <div className={style.day}>{dayOfWeek}</div>
