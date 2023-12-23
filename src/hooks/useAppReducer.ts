@@ -1,5 +1,6 @@
 import {useReducer} from "react";
-import {Forecast} from "../api/weather-api";
+import {Forecast} from "../api/types.ts";
+
 
 const initialState: State = {
     currentForecast: {} as CurrentForecast,
