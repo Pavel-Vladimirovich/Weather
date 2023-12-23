@@ -1,27 +1,47 @@
-# React + TypeScript + Vite
+# Weather Forecast App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Описание проекта:
+"Weather Forecast App" – это приложение для отображения текущей погоды и прогноза на ближайшие пять дней, разработанное с использованием Vite, React, TypeScript, библиотеки Axios и Formik. Проект предоставляет пользователям удобный способ получения актуальной информации о погоде в выбранных локациях.
 
-Currently, two official plugins are available:
+### Основные функциональности:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- #### Получение данных о погоде:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+```text
+    Приложение использует библиотеку Axios для выполнения HTTP-запросов к внешнему API, предоставляющему данные о погоде.
+    Аккуратное управление запросами и обработка ответов с использованием TypeScript для более безопасного кода.
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- #### Отображение текущей погоды:
+
+```text 
+    Пользователи могут вводить название города или использовать геолокацию для получения данных о текущей погоде.
+    Информация о температуре, влажности, скорости ветра и других факторах отображается в удобном и понятном формате.
+```
+
+- #### Форма для поиска местоположения:
+
+```text
+    Использование библиотеки Formik для управления формой поиска.
+    Валидация формы и обработка ввода пользователя для предотвращения ошибок.
+```
+
+- #### Графическое отображение погоды:
+
+```text
+    Приложение использует графические элементы для визуального представления текущей погоды.
+    Интуитивно понятное отображение данных для лучшего восприятия.
+```
+
+- #### Отзывчивый интерфейс:
+
+```text
+    Разработка интерфейса с использованием Vite, React и TypeScript обеспечивает отзывчивость приложения и удобство использования на различных устройствах.
+```
+### Используемые технологии:
+
+- #### Vite: для создания быстрых и эффективных сборок приложения.
+- #### React: для построения пользовательского интерфейса.
+- #### TypeScript: для улучшения читаемости и поддержки кода.
+- #### Axios: для выполнения HTTP-запросов к внешнему API погоды.
+- #### Formik: для управления формой поиска и ввода данных.

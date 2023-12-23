@@ -24,7 +24,7 @@ function App() {
 
 
     return (
-        <>
+        <div>
             <div className={styles.loader}>
                 {state.loader && <LinearLoader/>}
             </div>
@@ -35,15 +35,15 @@ function App() {
                 <div className={styles.container}>
                     <div className={styles.searchContainer}>
                         <Input forecastByCityName={getCityCoordinatesHandler}
-                            getUserCoordinates={getUserCoordinatesHandler}/>
-                            {state.messageError ? <span className={styles.message}>{state.messageError}</span> : null}
+                               getUserCoordinates={getUserCoordinatesHandler}/>
+                        {state.messageError ? <span className={styles.message}>{state.messageError}</span> : null}
                     </div>
                     {state.currentForecast.main ?
                         <Weather currentForecast={state.currentForecast} dailyForecast={state.dailyForecast}/> : null
                     }
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

@@ -36,7 +36,7 @@ export const Weather = ({currentForecast, dailyForecast}: PropsType) => {
                     <div>
                         <h2>{temp}°</h2>
                         <h4>feels like {feelsLike}°</h4>
-                        <div className={styles.currentDiscription}>
+                        <div className={styles.currentDescription}>
                             <div>
                                 <img src={minIcon} alt="icon"/>
                                 <h4 className={styles.temp}>{tempMin}°</h4>
