@@ -1,6 +1,7 @@
 import {Actions, currentForecast, dailyForecast, setError} from "../hooks/useAppReducer.ts";
-import {Forecast, weatherAPI} from "../api/weather-api.ts";
+import {weatherAPI} from "../api/weather-api.ts";
 import React from "react";
+import {Forecast} from "../api/types.ts";
 
 
 export const getWeatherDetails = async (lat: number, lon: number, cityName: string, dispatch: React.Dispatch<Actions>) => {
