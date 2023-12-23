@@ -1,9 +1,9 @@
-import style from "../../App.module.scss";
 import {getDayOfWeek, getWeatherIcon} from "../../utils";
 import {Card} from "../card/Card.tsx";
-import {CurrentForecast} from "../../hooks/useAppReducer.ts";
-import {Forecast} from "../../api/weather-api.ts";
+import {CurrentForecast} from "hooks/useAppReducer.ts";
 import {humidityIcon, maxIcon, minIcon, windIcon} from "../../assets";
+import {Forecast} from "api/types.ts";
+import styles from "./weather.module.scss";
 
 type PropsType = {
     currentForecast: CurrentForecast
@@ -14,7 +14,7 @@ export const Weather = ({currentForecast, dailyForecast}: PropsType) => {
 
     const city = currentForecast?.city
     const temp = Math.round(currentForecast?.main?.temp) | 0
-    const feelsLike =  Math.round(currentForecast?.main?.feels_like)
+    const feelsLike = Math.round(currentForecast?.main?.feels_like)
     const weather = currentForecast?.weather?.[0]?.main || ''
     const description = currentForecast?.weather?.[0]?.description || ''
     const weatherIcon = getWeatherIcon(currentForecast?.weather?.[0]?.description) || ''
@@ -23,49 +23,48 @@ export const Weather = ({currentForecast, dailyForecast}: PropsType) => {
     const wind = Math.round(currentForecast?.wind?.speed)
     const humidity = Math.round(currentForecast?.main?.humidity)
 
-    return(
-        <>
-            <div className={style.result}>
+    return (
+        <div>
+            <div className={styles.result}>
                 <img src={weatherIcon}
                      alt='icon'/>
                 <h2>{weather}</h2>
                 <h1>{city}</h1>
             </div>
-            <div className={style.tempContainer} >
-                <div className={style.current}>
+            <div className={styles.tempContainer}>
+                <div className={styles.current}>
                     <div>
                         <h2>{temp}°</h2>
                         <h4>feels like {feelsLike}°</h4>
-                        <div className={style.currentDiscription}>
+                        <div className={styles.currentDiscription}>
                             <div>
                                 <img src={minIcon} alt="icon"/>
-                                <h4 className={style.temp}>{tempMin}°</h4>
-
+                                <h4 className={styles.temp}>{tempMin}°</h4>
                             </div>
                             <div>
                                 <img src={maxIcon} alt="icon"/>
-                                <h4 className={style.temp}>{tempMax}°</h4>
+                                <h4 className={styles.temp}>{tempMax}°</h4>
                             </div>
                         </div>
                     </div>
                     <div>
-                        <img className={style.currentIcon}
+                        <img className={styles.currentIcon}
                              src={weatherIcon}
                              alt='icon'/>
                         <h4>{description}</h4>
-                        <div className={style.currentDiscription}>
+                        <div className={styles.currentDescription}>
                             <div>
                                 <img src={windIcon} alt="icon"/>
-                                <h4 className={style.temp}>{wind} m/s</h4>
+                                <h4 className={styles.temp}>{wind} m/s</h4>
                             </div>
                             <div>
                                 <img src={humidityIcon} alt="icon"/>
-                                <h4 className={style.temp}>{humidity} %</h4>
+                                <h4 className={styles.temp}>{humidity} %</h4>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className={style.daily} >
+                <div className={styles.daily}>
                     {dailyForecast.map((weatherItem, index) => {
                         if (weatherItem) {
                             const dayOfWeek = getDayOfWeek(weatherItem.dt_txt)
@@ -79,6 +78,6 @@ export const Weather = ({currentForecast, dailyForecast}: PropsType) => {
                     })}
                 </div>
             </div>
-        </>
+        </div>
     )
 }

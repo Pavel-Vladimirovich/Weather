@@ -18,4 +18,5 @@ body {
   font-family: 'Open Sans', sans-serif;  
   height: 100vh;
   background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+  color: var(--white);
 }

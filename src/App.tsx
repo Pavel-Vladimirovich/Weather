@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import style from './App.module.scss';
+import styles from './App.module.scss';
 import {Input, LinearLoader, Weather} from "./components";
 import {useAppReducer} from "./hooks/useAppReducer";
 import {FormikHelpers} from "formik";
@@ -25,18 +25,18 @@ function App() {
 
     return (
         <>
-            <div className={style.loader}>
+            <div className={styles.loader}>
                 {state.loader && <LinearLoader/>}
             </div>
-            <div className={style.wrapper}>
-                <div className={`${style.shape} ${style.shape1}`}></div>
-                <div className={`${style.shape} ${style.shape2}`}></div>
-                <div className={`${style.shape} ${style.shape3}`}></div>
-                <div className={style.container}>
-                    <div className={style.searchContainer}>
+            <div className={styles.wrapper}>
+                <div className={`${styles.shape} ${styles.shape1}`}></div>
+                <div className={`${styles.shape} ${styles.shape2}`}></div>
+                <div className={`${styles.shape} ${styles.shape3}`}></div>
+                <div className={styles.container}>
+                    <div className={styles.searchContainer}>
                         <Input forecastByCityName={getCityCoordinatesHandler}
                             getUserCoordinates={getUserCoordinatesHandler}/>
-                            {state.messageError ? <span className={style.message}>{state.messageError}</span> : null}
+                            {state.messageError ? <span className={styles.message}>{state.messageError}</span> : null}
                     </div>
                     {state.currentForecast.main ?
                         <Weather currentForecast={state.currentForecast} dailyForecast={state.dailyForecast}/> : null
