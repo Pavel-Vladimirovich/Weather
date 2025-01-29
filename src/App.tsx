@@ -24,15 +24,14 @@ function App() {
 
 
     return (
-        <div>
+        <div className={styles.container}>
             <div className={styles.loader}>
                 {state.loader && <LinearLoader/>}
             </div>
-            <div className={styles.wrapper}>
-                <div className={`${styles.shape} ${styles.shape1}`}></div>
-                <div className={`${styles.shape} ${styles.shape2}`}></div>
-                <div className={`${styles.shape} ${styles.shape3}`}></div>
-                <div className={styles.container}>
+            <div className={`${styles.shape} ${styles.shape1}`}></div>
+            <div className={`${styles.shape} ${styles.shape2}`}></div>
+            <div className={`${styles.shape} ${styles.shape3}`}></div>
+            <div className={styles.weather_container}>
                     <div className={styles.searchContainer}>
                         <Input forecastByCityName={getCityCoordinatesHandler}
                                getUserCoordinates={getUserCoordinatesHandler}/>
@@ -41,7 +40,6 @@ function App() {
                     {state.currentForecast.main ?
                         <Weather currentForecast={state.currentForecast} dailyForecast={state.dailyForecast}/> : null
                     }
-                </div>
             </div>
         </div>
     )

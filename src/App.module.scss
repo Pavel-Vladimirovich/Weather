@@ -1,11 +1,12 @@
-.wrapper {
-  font-size: 16px;
+.container{
   width: 100%;
-  max-width: 1240px;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 50%;
+  height: 100vh;
+  padding: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
 }
 
 .loader {
@@ -17,8 +18,10 @@
   height: 4px;
 }
 
-.container {
+.weather_container {
+  max-width: 1180px;
   width: 100%;
+  margin: 0 auto;
   background: var(--transp-white-2);
   backdrop-filter: blur(10px);
   padding: 3em 1.8em;
@@ -36,24 +39,30 @@
 }
 
 .shape1 {
-  height: 13em;
-  width: 13em;
-  right: -6.5em;
-  top: 1.8em;
+  height: 230px;
+  width: 230px;
+  top: 10px;
+  right: 40px;
+  @media( max-width: 768px){
+    top:260px
+  }
 }
 
 .shape2 {
-  height: 11em;
-  width: 11em;
-  bottom: -3.7em;
-  left: -2.5em;
+  height: 180px;
+  width: 180px;
+  bottom: 10px;
+  left: 20px;
+  @media( max-width: 768px){
+    bottom:60px
+  }
 }
 
 .shape3 {
-  height: 15em;
-  width: 15em;
-  bottom: 21.7em;
-  left: -20.5em;
+  height: 150px;
+  width: 150px;
+  top: 90px;
+  left: 40px;
 }
 
 .searchContainer {
