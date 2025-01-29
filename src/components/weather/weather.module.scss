@@ -14,6 +14,9 @@
     letter-spacing: 0.18em;
     font-weight: 500;
     margin: 1.25em 0;
+    @media( max-width: 768px){
+     margin: .4em 0;
+    }
   }
 
 }
@@ -22,6 +25,10 @@
   margin: 1em 0 0 0;
   width: 10.5em;
   filter: drop-shadow(0 1.8em 3.7em var(--shadow));
+  @media( max-width: 768px){
+    margin: .5em 0 0 0;
+    width: 5em;
+  }
 }
 
 .tempContainer {
@@ -40,7 +47,7 @@
   text-align: center;
 
   @media screen and (max-width: 768px) {
-    margin-bottom: 3em;
+    margin-bottom: 2em;
   }
 }
 
@@ -48,15 +55,22 @@
   text-align: center;
   font-size: 4em;
   font-weight: 400;
+  @media( max-width: 768px){
+    font-size: 3em;
+  }
 }
 
 .current h4 {
   font-size: 1em;
   font-weight: 400;
+
 }
 
 .currentIcon {
   width: 5.8em;
+  @media( max-width: 768px){
+    width: 4em;
+  }
 }
 
 .currentDescription {

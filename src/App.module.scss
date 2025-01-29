@@ -28,6 +28,9 @@
   border: 2px solid var(--transp-white-2);
   border-radius: 0.6em;
   box-shadow: 0 1.8em 3.7em var(--shadow);
+  @media( max-width: 768px){
+    padding: 1.8em;
+  }
 }
 
 .shape {
@@ -94,11 +97,15 @@
 .searchContainer button {
   font-size: 1em;
   letter-spacing: .1em;
+  text-align: start;
   color: var(--white);
   background-color: transparent;
   font-weight: 300;
   border: none;
-  cursor: pointer
+  cursor: pointer;
+  @media( max-width: 768px){
+    font-size: .8em;
+  }
 }
 
 .message {
@@ -106,4 +113,7 @@
   top: 2.68em;
   left: 0;
   font-weight: 400;
+  @media( max-width: 768px){
+    top: 3em
+  }
 }
